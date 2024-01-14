@@ -3,43 +3,153 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StackOverflowClone.Web</title>
+    <title>@ViewData["Title"] - StackOverflowClone</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/StackOverflowClone.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196">
+    <link rel="apple-touch-icon" href="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a">
+    <link rel="image_src" href="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StackOverflowClone.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+        <div class="nav-container">
+            <nav>
+                <div class="nav-brand">
+                    <div class="hamburger-menu-container">
+
+                        <div class="hamburger-menu">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="nav-dropdown-menu">
+                            <a href="#" class="current-link">Home</a>
+                            <h5>Public</h5>
+                            <ul class="nav-ul">
+                                <li class="nav-item">
+                                    <i class="fas fa-globe-europe"></i>
+                                    <a href="#" class="nav-link">Stack Overflow Clone</a>
+                                </li>
+                                <li class="nav-item"><a href="#" class="nav-link">Tags</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link">Users</a></li>
+                            </ul>
+                            <h5>Find a Job</h5>
+                            <ul class="nav-ul">
+                                <li class="nav-item"><a href="#" class="nav-link">Jobs</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link">Companies</a></li>
+                            </ul>
+                            <h5>Teams <a href="#">What's this ?</a></h5>
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Free 30 Day Trial</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="#" class="nav-icon">
+                        <i class="fab fa-stack-overflow"></i>
+                        <div class="nav-icon-text">
+                            stack <span class="nav-bold-text">overflow</span>
+                        </div>
+                    </a>
                 </div>
-            </div>
-        </nav>
+                <div class="nav-base-links">
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">For Teams</a></li>
+                    </ul>
+                </div>
+                <div class="nav-search">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="" placeholder="Search...">
+                    </div>
+                    <div class="search-hints">
+                        <div class="search-arrow-up"></div>
+                        <div class="search-hint-body">
+                            <div class="hints-grid-column">
+                                <div class="hint-text"><span>[tag] </span> search within a tag</div>
+                                <div class="hint-text"><span>user:1234 </span>  search by author</div>
+                                <div class="hint-text"><span>"words here"</span> exact phrase </div>
+                            </div>
+                            <div class="hints-grid-column">
+                                <div class="hint-text"><span>answers:0</span> unanswered questions</div>
+                                <div class="hint-text"><span> score:3  </span> posts with a 3+ score</div>
+                                <div class="hint-text"><span>isaccepted:yes </span> search within status</div>
+                            </div>
+                        </div>
+                        <div class="search-hint-footer">
+                            <a href="#" class="btn">Ask a question</a>
+                            <a href="#" class="search-help">Search help</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="nav-right-buttons">
+                    <div class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-login">Log in</a>
+                    <a asp-area="" asp-controller="Account" asp-action="Register" class="btn btn-register">Sign up</a>
+                </div>
+            </nav>
+        </div>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
+        <img src="https://cdn.sstatic.net/Img/home/robot.svg?v=dfa16a330cbd" alt="" class="footer-robot-img">
         <div class="container">
-            &copy; 2024 - StackOverflowClone.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-content">
+                <div class="footer-icon">
+                    <i class="fab fa-stack-overflow"></i>
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-nav-col">
+                        <div class="footer-links-title"><a href="#">Stack Overflow Clone</a></div>
+                        <ul class="footer-links">
+                            <li class="footer-link-item"><a href="#" class="footer-link">Questions</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Jobs</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Developer Jobs Directory</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Salary Calculator</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Help</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Mobile</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Disable Responsiveness</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-nav-col">
+                        <div class="footer-links-title"><a href="#">Products</a></div>
+                        <ul class="footer-links">
+                            <li class="footer-link-item"><a href="#" class="footer-link">Teams</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Talent</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Advertising</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Enterprise</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-nav-col">
+                        <div class="footer-links-title"><a href="#">Company</a></div>
+                        <ul class="footer-links">
+                            <li class="footer-link-item"><a href="#" class="footer-link">About</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Press</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Work Here</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Legal</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Privacy Policy</a></li>
+                            <li class="footer-link-item"><a href="#" class="footer-link">Contact Us</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
