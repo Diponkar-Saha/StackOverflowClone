@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflowClone.Web", "src\StackOverflowClone.Web\StackOverflowClone.Web.csproj", "{E51242F7-1F17-4AA6-8795-64FA93C51A73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflowClone.Web", "src\StackOverflowClone.Web\StackOverflowClone.Web.csproj", "{E51242F7-1F17-4AA6-8795-64FA93C51A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflowClone.Infrastructure", "StackOverflowClone.Infrastructure\StackOverflowClone.Infrastructure.csproj", "{27CD2C55-650B-4A18-A5C9-876DD1C52168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E51242F7-1F17-4AA6-8795-64FA93C51A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E51242F7-1F17-4AA6-8795-64FA93C51A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E51242F7-1F17-4AA6-8795-64FA93C51A73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CD2C55-650B-4A18-A5C9-876DD1C52168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CD2C55-650B-4A18-A5C9-876DD1C52168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CD2C55-650B-4A18-A5C9-876DD1C52168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CD2C55-650B-4A18-A5C9-876DD1C52168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
