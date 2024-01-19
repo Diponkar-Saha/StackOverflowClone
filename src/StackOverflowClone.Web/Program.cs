@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using StackOverflowClone.Infrastructure;
 using StackOverflowClone.Infrastructure.Permissions;
 using StackOverflowClone.Infrastructure.Securities.Permissions;
+using StackOverflowClone.Web.Dependency;
 using System.Reflection;
 using System.Text;
 
@@ -72,6 +73,7 @@ builder.Services.AddAuthorization(options =>
 
     });
 });
+builder.Services.AddNHibernate(connectionString);
 builder.Services.AddSingleton<IAuthorizationHandler, AdminManagerRequirementHandler>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -119,94 +121,3 @@ catch (Exception ex)
     log.Fatal($"API can not start.\n{ex}");
 }
 
-/*
- 
-
-
-
-public class User
-{
-    public int UserID { get; set; }
-    public string UserName { get; set; }
-    public byte[] PasswordHash { get; set; } // Use a secure hashing algorithm
-    public string Email { get; set; }
-    public DateTime RegistrationDate { get; set; }
-    public Role Role { get; set; }
-    public ICollection<Question> Questions { get; set; }
-    public ICollection<Answer> Answers { get; set; }
-    public ICollection<Vote> Votes { get; set; }
-    public ICollection<Comment> Comments { get; set; }
-}
-
-public class Question
-{
-    public int QuestionID { get; set; }
-    public int UserID { get; set; }
-    public string Title { get; set; }
-    public string Body { get; set; }
-    public DateTime CreationDate { get; set; }
-    public DateTime LastModifiedDate { get; set; }
-    public bool IsAnswered { get; set; }
-    public bool IsClosed { get; set; }
-    public User User { get; set; }
-    public ICollection<Answer> Answers { get; set; }
-    public ICollection<Vote> Votes { get; set; }
-    public ICollection<Comment> Comments { get; set; }
-    public ICollection<Tag> Tags { get; set; }
-}
-
-public class Answer
-{
-    public int AnswerID { get; set; }
-    public int QuestionID { get; set; }
-    public int UserID { get; set; }
-    public string Body { get; set; }
-    public DateTime CreationDate { get;set; }
-    public DateTime LastModifiedDate { get; set; }
-    public Question Question { get; set; }
-    public User User { get; set; }
-    public ICollection<Vote> Votes { get; set; }
-    public ICollection<Comment> Comments { get; set; }
-}
-
-public class Vote {
-    public int VoteID { get; set; }
-    public int UserID { get; set; }
-    public int? QuestionID { get; set; }
-    public int? AnswerID { get; set; }
-    public VoteType VoteType { get; set; }
-    public User User { get; set; }
-    public Question Question { get; set; }
-    public Answer Answer { get; set; }
-}
-
-public class Comment
-{
-    public int CommentID { get; set; }
-    public int UserID { get; set; }
-    public int? QuestionID { get; set; }
-    public int? AnswerID { get; set; }
-    public string Body { get; set; }
-    public DateTime CreationDate { get; set; }
-    public DateTime LastModifiedDate { get; set; }
-    public User User { get; set; }
-    public Question Question { get; set; }
-    public Answer Answer { get; set; }
-}
-
-public class Tag
-{
-    public int TagID { get; set; }
-    public string Name { get; set; }
-    public ICollection<Question> Questions { get; set; }
-}
-
-public enum Role
-{
-    User,
-    Moderator,
-    Administrator
-}
-
-
- * */
