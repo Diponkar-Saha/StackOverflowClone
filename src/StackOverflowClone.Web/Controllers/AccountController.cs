@@ -45,7 +45,6 @@ namespace StackOverflowClone.Web.Controllers
         public async Task<IActionResult> RegisterAsync(RegisterModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
-            //model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
@@ -100,7 +99,6 @@ namespace StackOverflowClone.Web.Controllers
 
             var model = _scope.Resolve<LoginModel>();
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             model.ReturnUrl = returnUrl;
@@ -115,8 +113,7 @@ namespace StackOverflowClone.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -133,7 +130,7 @@ namespace StackOverflowClone.Web.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+
             return View(model);
         }
 

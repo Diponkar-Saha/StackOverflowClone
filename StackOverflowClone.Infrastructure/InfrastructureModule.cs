@@ -29,6 +29,8 @@ namespace StackOverflowClone.Infrastructure
                 .WithParameter("connectionString", _connectionString)
                 .WithParameter("migrationAssembly", _migrationAssemblyName)
                 .InstancePerLifetimeScope();
+            builder.RegisterType<TokenService>().As<ITokenService>()
+               .InstancePerLifetimeScope();
             base.Load(builder);
         }
 
