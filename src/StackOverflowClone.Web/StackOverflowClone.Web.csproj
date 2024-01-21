@@ -25,4 +25,9 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+
 </Project>

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using StackOverflowClone.Infrastructure;
 using StackOverflowClone.Infrastructure.Permissions;
 using StackOverflowClone.Infrastructure.Securities.Permissions;
+using StackOverflowClone.Web;
 using StackOverflowClone.Web.Dependency;
 using System.Reflection;
 using System.Text;
@@ -22,6 +23,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
 
     containerBuilder.RegisterModule(new InfrastructureModule(connectionString, migrationAssembly));
+    containerBuilder.RegisterModule(new WebModule());
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
   options.UseSqlServer(connectionString,
@@ -73,7 +75,7 @@ builder.Services.AddAuthorization(options =>
 
     });
 });
-builder.Services.AddNHibernate(connectionString);
+//builder.Services.AddNHibernate(connectionString);
 builder.Services.AddSingleton<IAuthorizationHandler, AdminManagerRequirementHandler>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
