@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace StackOverflowClone.Web.Models
 {
@@ -12,6 +11,7 @@ namespace StackOverflowClone.Web.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*\d).*$", ErrorMessage = "The {0} need at least one numeric character.)")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -23,15 +23,8 @@ namespace StackOverflowClone.Web.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
+        [Display(Name = "Display Name")]
+        public string DisplayName { get; set; }
         public string? ReturnUrl { get; set; }
-
     }
 }

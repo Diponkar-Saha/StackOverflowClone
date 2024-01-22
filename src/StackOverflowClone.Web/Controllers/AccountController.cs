@@ -1,50 +1,46 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using StackOverflowClone.Infrastructure.Fearures.Membership;
-using StackOverflowClone.Infrastructure.Securities;
+using StackOverflowClone.Application.Membership.Entities;
 using StackOverflowClone.Web.Models;
-using System.Text;
 
 namespace StackOverflowClone.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly ILifetimeScope _scope;
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-   
-        private readonly ITokenService _tokenService;
 
         public AccountController(ILifetimeScope scope,
-            ILogger<AccountController> logger,
-            SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ITokenService tokenService
-            )
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<AccountController> logger,
+            IHttpContextAccessor contextAccessor)
         {
-            _scope = scope;
-            _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenService = tokenService;
+            _logger = logger;
+            _scope = scope;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<IActionResult> RegisterAsync(string returnUrl = null)
+        public IActionResult Register(string? returnUrl = null)
         {
             var model = _scope.Resolve<RegisterModel>();
             model.ReturnUrl = returnUrl;
-            //model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterAsync(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            model.ReturnUrl ??= Url.Content("~/");
+            model.ReturnUrl ??= Url.Content("~/Account/Login");
 
             if (ModelState.IsValid)
             {
@@ -52,52 +48,36 @@ namespace StackOverflowClone.Web.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName
+                    DisplayName = model.DisplayName,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
+                var roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+                if (result.Succeeded && roleResult.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                    var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        values: new { area = "", userId = user.Id, code = code, returnUrl = model.ReturnUrl },
-                        protocol: Request.Scheme);
-
-                   
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToAction("RegisterConfirmation", new { email = model.Email, returnUrl = model.ReturnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(model.ReturnUrl);
-                    }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(model.ReturnUrl);
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        public async Task<IActionResult> LoginAsync(string returnUrl = null)
+        public async Task<IActionResult> Login(string? returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var model = _scope.Resolve<LoginModel>();
+            returnUrl ??= Url.Content("~/");
 
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -107,20 +87,22 @@ namespace StackOverflowClone.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginAsync(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model)
         {
-            model.ReturnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
-
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.IsNotAllowed)
+                {
+                    return RedirectToAction("RegisterConfirmation", "Account", new { email = model.Email });
+                }
+
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
-                    var claims = (await _userManager.GetClaimsAsync(user)).ToArray();
-                    var token = await _tokenService.GetJwtToken(claims);
-                    HttpContext.Session.SetString("token", token);
+
+                    _contextAccessor.HttpContext.Session.SetString("userId", user.Id.ToString());
 
                     return LocalRedirect(model.ReturnUrl);
                 }
@@ -130,15 +112,14 @@ namespace StackOverflowClone.Web.Controllers
                 }
             }
 
-
             return View(model);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogoutAsync(string returnUrl = null)
+        [HttpPost, ValidateAntiForgeryToken, Authorize]
+        public async Task<IActionResult> Logout(string? returnUrl = null)
         {
             await _signInManager.SignOutAsync();
-
+            _contextAccessor.HttpContext.Session.Clear();
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -147,6 +128,12 @@ namespace StackOverflowClone.Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

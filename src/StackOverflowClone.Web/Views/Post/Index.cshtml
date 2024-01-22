@@ -1,0 +1,89 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager;
+@using Markdig
+@model PostModel
+
+<div class="content-header">
+    <div class="container">
+        <div class="row justify-content-between mb-2">
+            <div class="">
+                <h3> All Questions</h3>
+            </div>
+            <div class="">
+                <a asp-controller="Post" asp-action="Create" class="btn btn-primary">Ask Question</a>
+            </div>
+        </div>
+
+        <div class="row">
+                <div class="col">
+                    @foreach (var item in Model.Posts)
+                    {
+
+    var postUpvotes = item.Votes.Count(x => x.VoteType == StackOverflowClone.Application.Enum.VoteType.Up);
+    var postDownvotes = item.Votes.Count(x => x.VoteType == StackOverflowClone.Application.Enum.VoteType.Down);
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <div class="row justify-content-between">
+                                            <div>
+                                                <h5 class="card-title">Question by <strong> @item.User.DisplayName</strong> on @item.CreatedDate.ToLongDateString()</h5>
+                                            </div>
+                                            <div >
+                                                <h5><span class="badge badge-success">@item.Tag.TagName</span></h5>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <div class="col-12">
+                                            <h5 class="card-title text-bold">@item.Title</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="col-12">
+                                        @if (item.Description != null)
+                                        {
+                                            <p class="card-text"> @Html.Raw(Markdig.Markdown.ToHtml(item.Description))</p>
+                                        }
+                                         </div>
+                                    </div>
+                                </div>
+                            <div class="row justify-content-between">
+                                    <div>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">View Answers  <span class="badge badge-light">@item.Answers.Count()</span></a>
+                                    </div>
+                                    <div>
+                                    <button class="btn btn-primary mr-2" disabled><i class="fa fa-caret-up"> @postUpvotes</i></button>
+                                    <button class="btn btn-danger mr-2" disabled><i class="fa fa-caret-down"> @postDownvotes</i></button>
+                                    </div>
+                                </div>
+                            
+                           </div>
+                        </div>
+                    }
+                </div>
+        </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.CurrentPage - 1 })" tabindex="-1">Previous</a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = i })">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.CurrentPage + 1 })">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>

@@ -1,48 +1,81 @@
 ﻿@model RegisterModel
-@{
-    ViewData["Title"] = "Register";
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/captcha.css">
 }
+<div class="hold-transition register-page">
+    <div class="register-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a asp-controller="Home" asp-action="Index" class="h1"><b>Stack</b>Overflow</a>
+            </div>
+            <div class="card-body">
 
-<h1>@ViewData["Title"]</h1>
+                <form id="form" class="form" asp-antiforgery="true"  asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="text" asp-for="DisplayName" class="form-control" placeholder="Full name">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-controller="account" asp-antiforgery="true" asp-action="register" asp-area="" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="FirstName">First Name</label>
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="email" asp-for="Email" class="form-control" placeholder="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6LfpJoUoAAAAALNRRldTc4u8IBugFfUxVVRpHY8s"></div>
+                    <br />
+
+                    <div class="row justify-content-center">
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </div>
+                    </div>
+                </form>
+                <div style="text-align: center;">
+                    <p id="captcha_msg"></p>
+                </div>
+
+                <p class="text-center">Already have an account ? <a asp-area="" asp-controller="Account" asp-action="Login" class="text-center">Login</a></p>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="LastName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="LastName">Last Name</label>
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Email">Email</label>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Password">Password</label>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+            <!-- /.form-box -->
+        </div>
+        <!-- /.card -->
     </div>
+    <!-- /.register-box -->
 </div>
-
-@section Scripts {
+@section Scripts
+{
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="~/js/captcha.js"></script>
 }
-
-

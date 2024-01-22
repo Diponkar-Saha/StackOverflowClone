@@ -1,0 +1,40 @@
+﻿@using StackOverflowClone.Application.Membership.Entities;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+
+<nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+    <div class="container">
+        <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+           <span class="brand-text font-weight-light">Stack Overflow Clone</span>
+        </a>
+
+        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Post" asp-action="Index" class="nav-link">Question</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Tag" asp-action="Index" class="nav-link">Tags</a>
+                </li>
+                @if(SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="User" asp-action="MyPost" class="nav-link">My Question</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+            <partial name="_LoginPartial" />
+        </ul>
+    </div>
+</nav>

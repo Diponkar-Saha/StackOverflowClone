@@ -1,0 +1,59 @@
+﻿using NHibernate;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Mapping.ByCode.Conformist;
+using StackOverflowClone.Application.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StackOverflowClone.Application.Mapping
+{
+    public class AnswerMap : ClassMapping<Answer>
+    {
+        public AnswerMap()
+        {
+            Table("Answers");
+
+            Id(x => x.Id, x =>
+            {
+                x.Generator(Generators.Guid);
+                x.Type(NHibernateUtil.Guid);
+                x.Column("Id");
+                x.UnsavedValue(Guid.Empty);
+            });
+
+            Property(x => x.AnswerText, map =>
+            {
+                map.NotNullable(true);
+                map.Length(4000);
+                map.Type(NHibernateUtil.String);
+            });
+
+            Property(x => x.AcceptedAnswer);
+
+            Property(x => x.CreatedDate);
+
+            ManyToOne(x => x.User, map =>
+            {
+                map.NotNullable(true);
+                map.Column("UserId");
+                map.Cascade(Cascade.None);
+            });
+
+            ManyToOne(x => x.Post, map =>
+            {
+                map.NotNullable(true);
+                map.Column("PostId");
+                map.Cascade(Cascade.None);
+            });
+
+            Bag(x => x.Votes, map =>
+            {
+                map.Key(k => k.Column("AnswerId"));
+                map.Cascade(Cascade.All | Cascade.DeleteOrphans);
+            }, relation => relation.OneToMany());
+        }
+    }
+}

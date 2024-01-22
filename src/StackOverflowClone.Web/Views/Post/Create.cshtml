@@ -1,0 +1,59 @@
+﻿@model AddPostModel
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplemde@1.11.2/dist/simplemde.min.css">
+}
+
+<div class="content-header">
+    <div class="container">
+        <div class="row justify-content-between mb-2">
+                <div class="">
+                    <h3>New Questions</h3>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <form asp-action="Create" asp-controller="Post" asp-antiforgery="true" method="post">
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <label asp-for="Title" class="control-label"></label>
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label  class="control-label">Tags</label>
+                                    <select asp-for="TagsIds" asp-items="@Model.Tags" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea id="markdownEditor" asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/simplemde@1.11.2/dist/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@3.0.2/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+    <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("markdownEditor") });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
